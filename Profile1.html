@@ -1,0 +1,107 @@
+<html>
+<head>
+ <title>EnterpriseBrowser DataWedge Intent Page</title>
+<META HTTP-Equiv="QuitButton" Content="Visibility:Visible">
+<script type="text/javascript" charset="utf-8" src="ebapi-modules.js"></script>
+<script type="text/javascript">
+    function myIntentListenerCallback(myIntentData) {
+	var ouptutDiv = document.getElementById("myIntentDataDiv");
+			
+            if ((myIntentData != null) && (myIntentData.action == "com.symbol.dw.action")) 
+			{
+				var outputData = "";
+                var dataWedgeScannedData = myIntentData.data;
+                outputData = "<BR/> <b>Scanned Data:</b> <BR/>" +
+                    "<BR/> Intent Type:" + myIntentData.intentType + "<BR/>" +
+                    "<BR/> Intent Action:" + myIntentData.action + "<BR/>" +
+                    "<BR/> Decode Source:" + dataWedgeScannedData["com.symbol.datawedge.source"] + "<BR/>" +
+                    "<BR/> Decode Label Type:" + dataWedgeScannedData["com.symbol.datawedge.label_type"] + "<BR/>" +
+                    "<BR/> Decode Data:" + dataWedgeScannedData["com.symbol.datawedge.decode_data"] + "<BR/>" +
+                    "<BR/> Decode Data String:" + dataWedgeScannedData["com.symbol.datawedge.data_string"] + "<BR/>"+
+					"<BR/> Decode Mode:" + dataWedgeScannedData["com.symbol.datawedge.decoded_mode"] + "<BR/>";
+               
+                ouptutDiv.innerHTML = outputData;
+				
+            }
+			else if ((myIntentData != null) && (myIntentData.action == "com.symbol.datawedge.api.RESULT_ACTION")) 
+			{
+				var outputData = "";
+				var dataWedgeScannedData = myIntentData.data;
+				if(dataWedgeScannedData && dataWedgeScannedData["com.symbol.datawedge.api.RESULT_GET_ACTIVE_PROFILE"]){
+					outputData = "<BR/> <b> DataWedge Intent Output:</b> <BR/>" +
+                    "<BR/> Active DataWedge Profile:" + dataWedgeScannedData["com.symbol.datawedge.api.RESULT_GET_ACTIVE_PROFILE"]+"<BR/> ";
+				}
+                ouptutDiv.innerHTML = outputData;
+				
+			}
+			else if((myIntentData != null) && (myIntentData.action == "com.symbol.dwss.action")){
+			
+				var dwSSData = myIntentData.data; 
+		
+							
+					
+				var ouptutDiv = document.getElementById("myIntentDataDiv");
+				ouptutDiv.innerHTML = outputData;
+	
+				}		
+        }
+
+        function startIntentListener(){
+            var startListeningDiv = document.getElementById("intentMessageDiv");
+            startListeningDiv.innerHTML = "Enterprise Browser is listening the DataWedge Intent.";
+            EB.Intent.startListening(myIntentListenerCallback);
+			
+        }
+
+function registerIntent() {
+	LoadBarcodeProfile1();
+    startIntentListener();
+}
+		
+function LoadBarcodeProfile1(){
+	var extras = {
+		"com.symbol.datawedge.api.SET_DEFAULT_PROFILE":"barcode"
+	};
+	sendIntentData(extras);
+}
+
+function sendIntentData(extraData){
+	var params = {
+		intentType: EB.Intent.BROADCAST,
+		action: 'com.symbol.datawedge.api.ACTION',
+		appName: 'com.symbol.datawedge',
+		data: extraData
+		};
+	EB.Intent.send(params);	
+}	
+		
+    </script>
+</head>
+<body onload="registerIntent();" style="text-align: center;">
+    <h1 style="text-align: center;">EnterpriseBrowser Profile1</h1>
+	<br/><hr/>
+	
+	<!-- <input type="button" class="barcodeProfile" onclick="LoadBarcodeProfile1()" value="Switch to Barcode DW Profile"/> -->
+	<div id="intentMessageDiv"></div>
+    <div id="myIntentDataDiv"><b>Scanned Data:</b></div>
+
+<style>
+input[type=text]{
+	width: 60%;
+	height: 40px;
+	font-weight: bold;
+	font-style: normal;
+	font-size: 18px;
+	border: 1px solid;
+}
+
+input[type=button]{
+	width: 60%;
+	height: 40px;
+	font-weight: bold;
+	font-style: normal;
+	font-size: 18px;
+}
+</style>
+</body>
+</html>
