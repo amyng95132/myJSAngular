@@ -1,14 +1,12 @@
 <html>
 <head>
  <title>EnterpriseBrowser DataWedge Intent Page</title>
-<META HTTP-Equiv="QuitButton" Content="Visibility:Visible">
 <script type="text/javascript" charset="utf-8" src="ebapi-modules.js"></script>
 <script type="text/javascript">
-    function myIntentListenerCallback(myIntentData) {
+function myIntentListenerCallback(myIntentData) {
 	var ouptutDiv = document.getElementById("myIntentDataDiv");
 			
-            if ((myIntentData != null) && (myIntentData.action == "com.symbol.dw.action")) 
-			{
+        if ((myIntentData != null) && (myIntentData.action == "com.symbol.dw.action")) {
 				var outputData = "";
                 var dataWedgeScannedData = myIntentData.data;
                 outputData = "<BR/> <b>Scanned Data:</b> <BR/>" +
@@ -23,35 +21,13 @@
                 ouptutDiv.innerHTML = outputData;
 				
             }
-			else if ((myIntentData != null) && (myIntentData.action == "com.symbol.datawedge.api.RESULT_ACTION")) 
-			{
-				var outputData = "";
-				var dataWedgeScannedData = myIntentData.data;
-				if(dataWedgeScannedData && dataWedgeScannedData["com.symbol.datawedge.api.RESULT_GET_ACTIVE_PROFILE"]){
-					outputData = "<BR/> <b> DataWedge Intent Output:</b> <BR/>" +
-                    "<BR/> Active DataWedge Profile:" + dataWedgeScannedData["com.symbol.datawedge.api.RESULT_GET_ACTIVE_PROFILE"]+"<BR/> ";
-				}
-                ouptutDiv.innerHTML = outputData;
-				
-			}
-			else if((myIntentData != null) && (myIntentData.action == "com.symbol.dwss.action")){
-			
-				var dwSSData = myIntentData.data; 
-		
-							
-					
-				var ouptutDiv = document.getElementById("myIntentDataDiv");
-				ouptutDiv.innerHTML = outputData;
-	
-				}		
-        }
+}
 
-        function startIntentListener(){
-            var startListeningDiv = document.getElementById("intentMessageDiv");
-            startListeningDiv.innerHTML = "Enterprise Browser is listening the DataWedge Intent.";
-            EB.Intent.startListening(myIntentListenerCallback);
-			
-        }
+function startIntentListener(){
+    var startListeningDiv = document.getElementById("intentMessageDiv");
+    startListeningDiv.innerHTML = "Enterprise Browser is listening the DataWedge Intent.";
+    EB.Intent.startListening(myIntentListenerCallback);
+}
 
 function registerIntent() {
 	LoadBarcodeProfile1();
@@ -75,13 +51,15 @@ function sendIntentData(extraData){
 	EB.Intent.send(params);	
 }	
 		
-    </script>
+</script>
 </head>
-<body onload="registerIntent();" style="text-align: center;">
-    <h1 style="text-align: center;">EnterpriseBrowser Profile1</h1>
+<body onload="registerIntent();" 
+	  style="text-align: center;">
+	<br>
+	<br>
+    <h1 style="text-align: center;">
+    Enterprise Browser DataWedge Profile1</h1>
 	<br/><hr/>
-	
-	<!-- <input type="button" class="barcodeProfile" onclick="LoadBarcodeProfile1()" value="Switch to Barcode DW Profile"/> -->
 	<div id="intentMessageDiv"></div>
     <div id="myIntentDataDiv"><b>Scanned Data:</b></div>
 
